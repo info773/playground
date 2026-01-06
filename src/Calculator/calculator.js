@@ -15,16 +15,26 @@ export default function Calculator() {
   function handleAdd(num) {
     //----------
     // FORBID + AND - INPUT AT SAME TIME!!
+    // ONLY 1 OPERATOR
     //
     setDisplay((prev) => `${prev}${num}`);
   }
 
   function handleCalc() {
     setDisplay((prev) => {
-      if (!prev.includes("+")) return prev;
-      const parts = prev.split("+").map((p) => Number(p.trim()));
-      if (parts.some(Number.isNaN)) return prev; // guard bad input
-      return String(parts.reduce((a, b) => a + b, 0));
+      if (prev.includes("+")) {
+        const nums = prev.split("+").map((part) => Number(part.trim()));
+        if (nums.some((n) => Number.isNaN(n))) return prev;
+        return String(nums.reduce((a, b) => a + b, 0));
+      }
+
+      if (prev.includes("-")) {
+        const nums = prev.split("-").map((part) => Number(part.trim()));
+        if (nums.some((n) => Number.isNaN(n))) return prev;
+        return String(nums.reduce((a, b) => a - b));
+      }
+
+      return prev;
     });
   }
 
@@ -67,16 +77,17 @@ function NumPad({ onAdd, display }) {
   return (
     <div className="num-pad">
       {arr.map((number) => (
-        <Number onAdd={onAdd} display={display} key={number}>
+        <DigitButton onAdd={onAdd} display={display} key={number}>
           {number}
-        </Number>
+        </DigitButton>
       ))}
     </div>
   );
 }
 
-function Number({ children, onAdd, display }) {
-  return <button onClick={() => onAdd(children)}>{children}</button>;
+function DigitButton({ children, onAdd, display }) {
+  const value = String(children);
+  return <button onClick={() => onAdd(value)}>{children}</button>;
 }
 
 function Button({ onClick, children }) {
