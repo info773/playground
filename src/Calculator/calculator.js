@@ -17,31 +17,74 @@ export default function Calculator() {
     // FORBID + AND - INPUT AT SAME TIME!!
     // ONLY 1 OPERATOR
     //
+
     setDisplay((prev) => `${prev}${num}`);
   }
 
   function handleCalc() {
+    if (
+      display.split("").filter((item) => item === "+" || item === "-").length >=
+      2
+    ) {
+      alert("Only 1 Operator allowed");
+      return;
+    }
+
+    if (isNaN(Number(display))) {
+      alert("Invalid input");
+      return;
+    }
+
     setDisplay((prev) => {
       if (prev.includes("+")) {
         const nums = prev.split("+").map((part) => Number(part.trim()));
-        if (nums.some((n) => Number.isNaN(n))) return prev;
+        if (nums.some((n) => Number.isNaN(n))) return alert("Invalid input");
         return String(nums.reduce((a, b) => a + b, 0));
       }
 
       if (prev.includes("-")) {
         const nums = prev.split("-").map((part) => Number(part.trim()));
-        if (nums.some((n) => Number.isNaN(n))) return prev;
+        if (nums.some((n) => Number.isNaN(n))) return alert("Invalid input");
         return String(nums.reduce((a, b) => a - b));
       }
 
+      if (prev.includes("/")) {
+        const nums = prev.split("/").map((part) => Number(part.trim()));
+        if (nums.some((n) => Number.isNaN(n))) return alert("Invalid input");
+        return nums[0] / nums[1];
+      }
+
+      if (prev.includes("*")) {
+        const nums = prev.split("*").map((part) => Number(part.trim()));
+        if (nums.some((n) => Number.isNaN(n))) return alert("Invalid input");
+        return nums[0] * nums[1];
+      }
+
+      if (prev.includes("%")) {
+        const nums = prev.split("%").map((part) => Number(part.trim()));
+        if (nums.some((n) => Number.isNaN(n))) return alert("Invalid input");
+        return nums[0] % nums[1];
+      }
+
+      alert("No Operator?");
       return prev;
     });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    handleCalc();
   }
 
   return (
     <div className="calculator">
       <h1>Calculator</h1>
-      <Display display={display} onDisplay={setDisplay} />
+      <Display
+        display={display}
+        onDisplay={setDisplay}
+        onSubmit={handleSubmit}
+      />
       <NumPad onAdd={handleAdd} display={display} />
       <div className="btns">
         <Button onClick={handleDelete}>Delete</Button>
@@ -52,14 +95,16 @@ export default function Calculator() {
   );
 }
 
-function Display({ display, onDisplay }) {
+function Display({ display, onDisplay, onSubmit }) {
   return (
     <div>
-      <input
-        type="text"
-        value={display}
-        onChange={(e) => onDisplay(e.target.value)}
-      />
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          value={display}
+          onChange={(e) => onDisplay(e.target.value)}
+        />
+      </form>
     </div>
   );
 }
@@ -73,6 +118,9 @@ function NumPad({ onAdd, display }) {
   arr.push("+");
   arr.push(0);
   arr.push("-");
+  arr.push("/");
+  arr.push("*");
+  arr.push("%");
 
   return (
     <div className="num-pad">
