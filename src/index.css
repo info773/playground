@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.num-pad {
+  display: grid;
+  grid-template-columns: 30px 30px 30px;
+  padding: 30px;
+}
+
+.btns {
+  display: grid;
+  grid-template-columns: 60px 60px 60px;
+  padding: 30px;
+}
