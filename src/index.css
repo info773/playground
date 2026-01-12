@@ -12,21 +12,74 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.base-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.projects {
+  display: flex;
+}
+
+.btns-project {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  padding: 10px;
+  gap: 5px;
+}
+
+.btn-active {
+  background-color: #222;
+  color: #fff;
+}
 
 .calculator {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 300px;
 }
 
 .num-pad {
   display: grid;
   grid-template-columns: 30px 30px 30px;
   padding: 30px;
+  justify-content: center;
 }
 
 .btns {
   display: grid;
   grid-template-columns: 60px 60px 60px;
   padding: 30px;
+  justify-content: center;
+}
+
+.close-btn {
+  align-self: end;
+}
+
+.content {
+  align-self: center;
+}
+
+.display {
+  display: flex;
+  justify-content: center;
+}
+
+.battle-tracker {
+  display: flex;
+  flex-direction: column;
+}
+
+.monster {
+  display: flex;
+  gap: 5px;
+}
+
+.input-monster {
+  width: 30px;
 }

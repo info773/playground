@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function Calculator() {
   const [display, setDisplay] = useState("");
+  const [isOpen, setIsOpen] = useState(true);
 
   function handleDelete() {
     setDisplay("");
@@ -78,18 +79,27 @@ export default function Calculator() {
   }
 
   return (
-    <div className="calculator">
-      <h1>Calculator</h1>
-      <Display
-        display={display}
-        onDisplay={setDisplay}
-        onSubmit={handleSubmit}
-      />
-      <NumPad onAdd={handleAdd} display={display} />
-      <div className="btns">
-        <Button onClick={handleDelete}>Delete</Button>
-        <Button onClick={handleBackspace}>Back</Button>
-        <Button onClick={handleCalc}>Result</Button>
+    <div className="base-content">
+      <div className="calculator">
+        <h1>Calculator</h1>
+        <button className="close-btn" onClick={() => setIsOpen(!isOpen)}>
+          ❌
+        </button>
+        {isOpen && (
+          <div className="content">
+            <Display
+              display={display}
+              onDisplay={setDisplay}
+              onSubmit={handleSubmit}
+            />
+            <NumPad onAdd={handleAdd} display={display} />
+            <div className="btns">
+              <Button onClick={handleDelete}>Delete</Button>
+              <Button onClick={handleBackspace}>Back</Button>
+              <Button onClick={handleCalc}>Result</Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -97,7 +107,7 @@ export default function Calculator() {
 
 function Display({ display, onDisplay, onSubmit }) {
   return (
-    <div>
+    <div className="display">
       <form onSubmit={onSubmit}>
         <input
           type="text"
