@@ -28,12 +28,28 @@ export default function BattleTracker() {
     setMonsters((monsters) => [...monsters, newMonster]);
   }
 
+  function handleDeleteMonster(id) {
+    setMonsters((monsters) => monsters.filter((monster) => monster.id !== id));
+  }
+
+  function handleUpdateMonster(id, updates) {
+    setMonsters((monsters) =>
+      monsters.map((monster) =>
+        monster.id === id ? { ...monster, ...updates } : monster
+      )
+    );
+  }
+
   return (
     <div className="base-content">
       <div className="battle-tracker">
         <h1>BattleTracker</h1>
         <Form onAddMonsters={handleAddMonster} />
-        <TrackerContet monsters={monsters} />
+        <TrackerContet
+          monsters={monsters}
+          onDeleteMonster={handleDeleteMonster}
+          onUpdateMonster={handleUpdateMonster}
+        />
       </div>
     </div>
   );
@@ -88,51 +104,70 @@ function Form({ onAddMonsters }) {
   );
 }
 
-function TrackerContet({ monsters }) {
-  const sortedMonsters = monsters.sort((a, b) => b.init - a.init);
+function TrackerContet({ monsters, onDeleteMonster, onUpdateMonster }) {
+  const [sortBy, setSortBy] = useState("dec");
+
+  const sortedMonsters = [...monsters].sort((a, b) =>
+    sortBy === "dec"
+      ? b.init - a.init
+      : sortBy === "inc"
+      ? a.init - b.init
+      : sortBy === "name-az"
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name)
+  );
+
   return (
     <div>
+      <Sorting sortBy={sortBy} setSortBy={setSortBy} />
       {sortedMonsters.map((monster) => (
         <span className="monster">
-          <Monster monster={monster} key={monster.id} />
+          <Monster
+            monster={monster}
+            key={monster.id}
+            onDeleteMonster={onDeleteMonster}
+            onUpdateMonster={onUpdateMonster}
+          />
         </span>
       ))}
     </div>
   );
 }
 
-function Monster({ monster }) {
-  const [name, setName] = useState(monster.name);
-  const [init, setInit] = useState(monster.init);
-  const [hp, setHp] = useState(monster.hp);
+function Monster({ monster, onDeleteMonster, onUpdateMonster }) {
   const [healthModifier, setHealthModifier] = useState(0);
 
   function handleSubstract() {
-    setHp((hp) => hp - healthModifier);
+    onUpdateMonster(monster.id, { hp: monster.hp - healthModifier });
     setHealthModifier(0);
   }
 
   function handleAdd() {
-    setHp((hp) => hp + healthModifier);
+    onUpdateMonster(monster.id, { hp: monster.hp + healthModifier });
     setHealthModifier(0);
   }
 
   return (
     <div className="monster">
+      <DeleteButton monsterId={monster.id} onDeleteMonster={onDeleteMonster} />
       <input
         type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={monster.name}
+        onChange={(e) => onUpdateMonster(monster.id, { name: e.target.value })}
       />
       <input
         type="text"
-        value={init}
-        onChange={(e) => setInit(Number(e.target.value))}
+        value={monster.init}
+        onChange={(e) =>
+          onUpdateMonster(monster.id, { init: Number(e.target.value) })
+        }
       />
       <input
         type="text"
-        value={hp}
-        onChange={(e) => setHp(Number(e.target.value))}
+        value={monster.hp}
+        onChange={(e) =>
+          onUpdateMonster(monster.id, { hp: Number(e.target.value) })
+        }
       />
       <HealthEvents
         healthModifier={healthModifier}
@@ -164,7 +199,30 @@ function HealthEvents({
   );
 }
 
+function DeleteButton({ onDeleteMonster, monsterId }) {
+  return <button onClick={() => onDeleteMonster(monsterId)}>❌</button>;
+}
 // TODO
-// - Delete
-// - sort when chaning AFTER added
+// How to structure Components better with children prop?
+// change init - only one letter at a time
 // - Layout
+// Left of -> SortBy TrackerContent
+
+function Sorting({ sortBy, setSortBy }) {
+  return (
+    <div>
+      <select
+        id="sorting"
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value)}
+      >
+        <option value="dec">decreasing</option>
+        <option value="inc">increeasing</option>
+        <option value="name-az">name (A-Z)</option>
+        <option value="name-za">name (Z-A)</option>
+      </select>
+    </div>
+  );
+}
+
+// How to make select a controlled element?
