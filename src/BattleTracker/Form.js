@@ -52,7 +52,7 @@ export function Form({ onAddMonsters }) {
             onChange={(e) => setHp(Number(e.target.value))}
           />
         </div>
-        <button>Add</button>
+        <button className="battletracker-btn-form">Add</button>
       </form>
     </div>
   );

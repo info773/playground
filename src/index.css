@@ -94,3 +94,8 @@ code {
 .sort-option {
   padding: 10px 0px;
 }
+
+.battletracker-btn-form {
+  height: 20px;
+  align-self: flex-end;
+}
