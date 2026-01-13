@@ -8,6 +8,27 @@ export function Form({ onAddMonsters }) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    setInit((prev) => Number(prev));
+    setHp((prev) => Number(prev));
+
+    if (isNaN(init) && isNaN(hp)) {
+      alert("Initiative AND Hitpoints must be a number each");
+      setInit("");
+      setHp("");
+      return;
+    }
+
+    if (isNaN(init)) {
+      alert("Initiative must be a number");
+      setInit("");
+      return;
+    }
+    if (isNaN(hp)) {
+      alert("Hitpoints must be a number");
+      setHp("");
+      return;
+    }
+
     const id = crypto.randomUUID();
     const newMonster = {
       name,
@@ -40,7 +61,7 @@ export function Form({ onAddMonsters }) {
             type="text"
             name="init"
             value={init}
-            onChange={(e) => setInit(Number(e.target.value))}
+            onChange={(e) => setInit(e.target.value)}
           />
         </div>
         <div>
@@ -49,7 +70,7 @@ export function Form({ onAddMonsters }) {
             type="text"
             name="hp"
             value={hp}
-            onChange={(e) => setHp(Number(e.target.value))}
+            onChange={(e) => setHp(e.target.value)}
           />
         </div>
         <button className="battletracker-btn-form">Add</button>

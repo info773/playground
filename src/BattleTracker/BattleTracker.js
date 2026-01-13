@@ -2,29 +2,8 @@ import { useState } from "react";
 import { Form } from "./Form";
 import { TrackerContet } from "./TrackerContet";
 
-const startingMonsters = [
-  {
-    name: "Bandit",
-    init: 18,
-    hp: 35,
-    id: 1,
-  },
-  {
-    name: "Dragon",
-    init: 22,
-    hp: 155,
-    id: 2,
-  },
-  {
-    name: "Goblin",
-    init: 14,
-    hp: 20,
-    id: 3,
-  },
-];
-
 export default function BattleTracker() {
-  const [monsters, setMonsters] = useState(startingMonsters);
+  const [monsters, setMonsters] = useState([]);
 
   function handleAddMonster(newMonster) {
     setMonsters((monsters) => [...monsters, newMonster]);

@@ -17,13 +17,17 @@ export function TrackerContet({ monsters, onDeleteMonster, onUpdateMonster }) {
 
   return (
     <div>
-      <Sorting sortBy={sortBy} setSortBy={setSortBy} />
-      <div className="monster">
-        <span></span>
-        <span>Name:</span>
-        <span>Init:</span>
-        <span>Hp:</span>
-      </div>
+      {monsters.length !== 0 && (
+        <Sorting sortBy={sortBy} setSortBy={setSortBy} />
+      )}
+      {monsters.length !== 0 ? (
+        <div className="monster">
+          <span></span>
+          <span>Name:</span>
+          <span>Init:</span>
+          <span>Hp:</span>
+        </div>
+      ) : null}
       {sortedMonsters.map((monster) => (
         <span className="monster">
           <Monster
