@@ -76,10 +76,21 @@ code {
 }
 
 .monster {
-  display: flex;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: 40px 80px 60px 60px 100px;
+  gap: 10px;
+  padding-top: 2px;
 }
 
 .input-monster {
   width: 30px;
+}
+
+.form-battletracker {
+  display: flex;
+  gap: 5px;
+}
+
+.sort-option {
+  padding: 10px 0px;
 }
