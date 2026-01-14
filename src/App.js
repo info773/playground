@@ -3,7 +3,7 @@ import Calculator from "./Calculator/calculator.js";
 import BattleTracker from "./BattleTracker/BattleTracker.js";
 
 export default function App() {
-  const [activeProject, setActiveProject] = useState("None");
+  const [activeProject, setActiveProject] = useState("BattleTracker");
 
   return (
     <div className="projects">
